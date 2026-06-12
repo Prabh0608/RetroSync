@@ -14,7 +14,7 @@ function App() {
     {
       id: "2",
       column: "to-improve",
-      test: "Daily standups are running a bit too long.",
+      text: "Daily standups are running a bit too long.",
       votes: 2,
     },
     {
@@ -40,27 +40,112 @@ function App() {
         width: "100%",
       }}
     >
-      <div>
+      <div
+        style={{
+          background: "#f8fafc",
+          padding: "16px",
+          borderRadius: "12px",
+        }}
+      >
         <h3>Went Well</h3>
+
+        <button
+          style={{
+            width: "100%",
+            padding: "10px",
+            margin: "10px",
+            border: "1px dashed #cbd5e1",
+            borderRadius: "8px",
+            background: "white",
+            cursor: "pointer",
+          }}
+        >
+          + Add New Item
+        </button>
+
         {notes
-          .filter((note) => {
-            note.column === "went-well";
-          })
+          .filter((note) => note.column === "went-well")
           .map((filteredNote) => {
-            <Card
-              text={filteredNote.text}
-              name="Prabhjot"
-              likes={filteredNote.votes}
-            />;
+            return (
+              <Card
+                text={filteredNote.text}
+                name="Prabhjot"
+                likes={filteredNote.votes}
+              />
+            );
           })}
       </div>
 
-      <div>
+      <div
+        style={{
+          background: "#f8fafc",
+          padding: "16px",
+          borderRadius: "12px",
+        }}
+      >
         <h3>To Improve</h3>
+
+        <button
+          style={{
+            width: "100%",
+            padding: "10px",
+            margin: "10px",
+            border: "1px dashed #cbd5e1",
+            borderRadius: "8px",
+            background: "white",
+            cursor: "pointer",
+          }}
+        >
+          + Add New Item
+        </button>
+
+        {notes
+          .filter((note) => note.column === "to-improve")
+          .map((filteredNote) => {
+            return (
+              <Card
+                text={filteredNote.text}
+                name="Prabhjot"
+                likes={filteredNote.votes}
+              />
+            );
+          })}
       </div>
 
-      <div>
+      <div
+        style={{
+          background: "#f8fafc",
+          padding: "16px",
+          borderRadius: "12px",
+        }}
+      >
         <h3>Action Items</h3>
+
+        <button
+          style={{
+            width: "100%",
+            padding: "10px",
+            margin: "10px",
+            border: "1px dashed #cbd5e1",
+            borderRadius: "8px",
+            background: "white",
+            cursor: "pointer",
+          }}
+        >
+          + Add New Item
+        </button>
+
+        {notes
+          .filter((note) => note.column === "action-items")
+          .map((filteredNote) => {
+            return (
+              <Card
+                text={filteredNote.text}
+                name="Prabhjot"
+                likes={filteredNote.votes}
+              />
+            );
+          })}
       </div>
     </div>
   );
