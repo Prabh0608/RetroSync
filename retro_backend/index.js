@@ -15,6 +15,10 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log("A new user has connected!");
+
+  socket.on("client-add-note", (newNote) => {
+    socket.broadcast.emit("server-note-added", newNote);
+  });
 });
 
 server.listen("3000", () => {

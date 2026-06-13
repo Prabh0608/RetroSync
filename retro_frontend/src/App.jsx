@@ -1,14 +1,19 @@
 import { io } from "socket.io-client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Column from "./components/Column";
 
 function App() {
   const [notes, setNotes] = useState([]);
+  const socketRef = useRef(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    socketRef.current = io("http://localhost:3000");
 
-    return () => socket.disconnect();
+    socketRef.current.on("server-note-added", (newNote) => {
+      setNotes((prevNotes) => [...prevNotes, newNote]);
+    });
+
+    return () => socketRef.current.disconnect();
   }, []);
 
   const newNoteHandle = (text, activeColumns) => {
@@ -18,8 +23,8 @@ function App() {
       text: text,
       votes: 0,
     };
-    console.log(newNote);
     setNotes([...notes, newNote]);
+    socketRef.current.emit("client-add-note", newNote);
   };
 
   return (
