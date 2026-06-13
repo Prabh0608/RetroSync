@@ -2,20 +2,13 @@ import Form from "./noteForm";
 import Card from "./card";
 import { useState } from "react";
 
-const Column = ({ title }) => {
+const Column = ({ title, newNoteHandle, notes }) => {
   const [text, setText] = useState("");
-  const [notes, setNotes] = useState([]);
   const [activeColumns, setActiveColumns] = useState();
 
   const handleAddNote = (e) => {
     e.preventDefault();
-    const newNote = {
-      id: Date.now().toString(),
-      column: activeColumns,
-      text: text,
-      votes: 0,
-    };
-    setNotes([...notes, newNote]);
+    newNoteHandle(text, activeColumns);
     setText("");
   };
   return (
