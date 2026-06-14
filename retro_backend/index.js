@@ -19,6 +19,10 @@ io.on("connection", (socket) => {
   socket.on("client-add-note", (newNote) => {
     socket.broadcast.emit("server-note-added", newNote);
   });
+
+  socket.on("client-vote-increase", (cardID) => {
+    socket.broadcast.emit("server-vote-increase", cardID);
+  });
 });
 
 server.listen("3000", () => {

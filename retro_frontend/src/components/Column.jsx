@@ -1,16 +1,20 @@
 import Form from "./noteForm";
 import Card from "./card";
 import { useState } from "react";
+import { useBoard } from "../context/BoardContext";
 
-const Column = ({ title, newNoteHandle, notes }) => {
+const Column = ({ title }) => {
   const [text, setText] = useState("");
   const [activeColumns, setActiveColumns] = useState();
+  const { notes, newNoteHandle } = useBoard();
 
   const handleAddNote = (e) => {
     e.preventDefault();
     newNoteHandle(text, activeColumns);
+    setActiveColumns("");
     setText("");
   };
+
   return (
     <div
       style={{
@@ -52,7 +56,8 @@ const Column = ({ title, newNoteHandle, notes }) => {
             <Card
               text={filteredNote.text}
               name="Prabhjot"
-              likes={filteredNote.votes}
+              id={filteredNote.id}
+              votes={filteredNote.votes}
             />
           );
         })}

@@ -1,4 +1,7 @@
-const Card = ({ text, name, likes }) => {
+import { useBoard } from "../context/BoardContext";
+
+const Card = ({ text, name, id, votes }) => {
+  const { handleVoteShared } = useBoard();
   return (
     <div
       style={{
@@ -29,7 +32,12 @@ const Card = ({ text, name, likes }) => {
         }}
       >
         <span>{name}</span>
-        <span>❤️ {likes}</span>
+        <butoon
+          onClick={() => handleVoteShared(id)}
+          style={{ cursor: "pointer" }}
+        >
+          ❤️ {votes}
+        </butoon>
       </div>
     </div>
   );
