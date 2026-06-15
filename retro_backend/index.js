@@ -16,12 +16,17 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("A new user has connected!");
 
-  socket.on("client-add-note", (newNote) => {
-    socket.broadcast.emit("server-note-added", newNote);
+  socket.on("join-room", (id) => {
+    socket.join(id);
+    console.log(`User ${socket.id} joined room: ${id}`);
   });
 
-  socket.on("client-vote-increase", (cardID) => {
-    socket.broadcast.emit("server-vote-increase", cardID);
+  socket.on("client-add-note", (newNote) => {
+    socket.to(newNote.roomID).emit("server-note-added", newNote);
+  });
+
+  socket.on("client-vote-increase", (cardID, roomID) => {
+    socket.to(roomID).emit("server-vote-increase", cardID);
   });
 });
 

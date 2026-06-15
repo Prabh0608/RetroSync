@@ -2,12 +2,12 @@
 import { useState, useEffect, useRef, useContext, createContext } from "react";
 import { io } from "socket.io-client";
 
-const BoardContext = createContext();
+export const BoardContext = createContext();
 
 export default function BoardProvider({ children }) {
   const [notes, setNotes] = useState([]);
+  const [roomID, setRoomID] = useState("");
   const socketRef = useRef(null);
-
   useEffect(() => {
     socketRef.current = io("http://localhost:3000");
 
@@ -32,6 +32,7 @@ export default function BoardProvider({ children }) {
       column: activeColumns,
       text: text,
       votes: 0,
+      roomID: roomID,
     };
     setNotes([...notes, newNote]);
     socketRef.current.emit("client-add-note", newNote);
@@ -43,11 +44,18 @@ export default function BoardProvider({ children }) {
         note.id === cardId ? { ...note, votes: note.votes + 1 } : note,
       ),
     );
-    socketRef.current.emit("client-vote-increase", cardId);
+    socketRef.current.emit("client-vote-increase", cardId, roomID);
+  };
+
+  const handleNewBoard = () => {
+    setRoomID("roomabcd");
+    socketRef.current.emit("join-room", "roomabcd");
   };
 
   return (
-    <BoardContext.Provider value={{ notes, handleVoteShared, newNoteHandle }}>
+    <BoardContext.Provider
+      value={{ notes, roomID, handleVoteShared, newNoteHandle, handleNewBoard }}
+    >
       {children}
     </BoardContext.Provider>
   );
