@@ -9,10 +9,15 @@ export default function BoardProvider({ children }) {
   const [roomID, setRoomID] = useState("");
   const [username, setUsername] = useState("anonymous");
   const [users, setUsers] = useState([]);
+  const [mySocketId, setMySocketId] = useState("");
   const socketRef = useRef(null);
 
   useEffect(() => {
     socketRef.current = io("http://localhost:3000");
+
+    socketRef.current.on("connect", () => {
+      setMySocketId(socketRef.current.id);
+    });
 
     socketRef.current.on("server-note-added", (newNote) => {
       setNotes((prevNotes) => [...prevNotes, newNote]);
@@ -71,7 +76,12 @@ export default function BoardProvider({ children }) {
   };
 
   const handleUsername = (text) => {
-    setUsername(text);
+    const finalName = text.trim() === "" ? "anonymous" : text;
+    setUsername(finalName);
+  };
+
+  const handleResetRoom = () => {
+    setRoomID("");
   };
 
   const handleDragEnd = (result) => {
@@ -111,8 +121,10 @@ export default function BoardProvider({ children }) {
         newNoteHandle,
         handleNewBoard,
         handleUsername,
+        handleResetRoom,
         handleDragEnd,
         users,
+        mySocketId,
       }}
     >
       {children}

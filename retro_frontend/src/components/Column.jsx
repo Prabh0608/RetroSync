@@ -7,11 +7,11 @@ import { useBoard } from "../context/BoardContext";
 const Column = ({ title }) => {
   const [text, setText] = useState("");
   const [activeColumns, setActiveColumns] = useState();
-  const { notes, newNoteHandle, users } = useBoard();
+  const { notes, newNoteHandle } = useBoard();
 
   const handleAddNote = (e) => {
     e.preventDefault();
-    newNoteHandle(text, title);
+    newNoteHandle(text, activeColumns);
     setActiveColumns("");
     setText("");
   };
@@ -38,44 +38,6 @@ const Column = ({ title }) => {
             }}
           >
             <h3>{title}</h3>
-
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {users?.slice(0, 4).map((user, idx) => (
-                <img
-                  key={idx}
-                  src={"/userAvatar.jpg"}
-                  alt={user.username}
-                  title={user.username}
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    borderRadius: "50%",
-                    border: "2px solid white",
-                    marginLeft: "-8px",
-                    objectFit: "cover",
-                  }}
-                />
-              ))}
-
-              {users?.length > 4 && (
-                <div
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    borderRadius: "50%",
-                    background: "#e2e8f0",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "12px",
-                    marginLeft: "-8px",
-                    border: "2px solid white",
-                  }}
-                >
-                  +{users.length - 4}
-                </div>
-              )}
-            </div>
           </div>
 
           <button
@@ -114,7 +76,6 @@ const Column = ({ title }) => {
                 votes={filteredNote.votes}
               />
             ))}
-
           {provided.placeholder}
         </div>
       )}
