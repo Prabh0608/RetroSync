@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useBoard } from "../context/BoardContext";
 
 const JoiningScreen = () => {
-  const { handleNewBoard } = useBoard();
+  const [text, setText] = useState("");
+  const { handleNewBoard, handleUsername } = useBoard();
 
   return (
     <div
@@ -13,6 +15,45 @@ const JoiningScreen = () => {
         backgroundColor: "#fff",
       }}
     >
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          border: "1px solid #c4c7c5",
+          borderRadius: "16px",
+          padding: "0 16px",
+          height: "48px",
+          width: "320px",
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Enter your username"
+          onChange={(e) => setText(e.target.value)}
+          style={{
+            border: "none",
+            outline: "none",
+            width: "100%",
+            fontSize: "16px",
+          }}
+        />
+      </div>
+      <button
+        onClick={() => {
+          handleUsername(text);
+          setText("");
+        }}
+        style={{
+          background: "transparent",
+          border: "none",
+          color: "#5f6368",
+          fontSize: "16px",
+          cursor: "pointer",
+          whiteSpace: "nowrap",
+        }}
+      >
+        Submit
+      </button>
       <div
         style={{
           display: "flex",

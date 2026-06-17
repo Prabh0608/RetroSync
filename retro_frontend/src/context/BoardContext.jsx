@@ -7,7 +7,10 @@ export const BoardContext = createContext();
 export default function BoardProvider({ children }) {
   const [notes, setNotes] = useState([]);
   const [roomID, setRoomID] = useState("");
+  const [username, setUsername] = useState("anonymous");
+  const [users, setUsers] = useState([]);
   const socketRef = useRef(null);
+
   useEffect(() => {
     socketRef.current = io("http://localhost:3000");
 
@@ -21,6 +24,10 @@ export default function BoardProvider({ children }) {
           note.id === cardId ? { ...note, votes: note.votes + 1 } : note,
         ),
       );
+    });
+
+    socketRef.current.on("room-users-updated", (roomUsers) => {
+      setUsers(roomUsers);
     });
 
     return () => socketRef.current.disconnect();
@@ -49,12 +56,27 @@ export default function BoardProvider({ children }) {
 
   const handleNewBoard = () => {
     setRoomID("roomabcd");
-    socketRef.current.emit("join-room", "roomabcd");
+    socketRef.current.emit("join-room", {
+      roomID: "roomabcd",
+      username: username,
+    });
+  };
+
+  const handleUsername = (text) => {
+    setUsername(text);
   };
 
   return (
     <BoardContext.Provider
-      value={{ notes, roomID, handleVoteShared, newNoteHandle, handleNewBoard }}
+      value={{
+        notes,
+        roomID,
+        handleVoteShared,
+        newNoteHandle,
+        handleNewBoard,
+        handleUsername,
+        users,
+      }}
     >
       {children}
     </BoardContext.Provider>

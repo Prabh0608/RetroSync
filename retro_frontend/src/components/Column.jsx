@@ -6,7 +6,7 @@ import { useBoard } from "../context/BoardContext";
 const Column = ({ title }) => {
   const [text, setText] = useState("");
   const [activeColumns, setActiveColumns] = useState();
-  const { notes, newNoteHandle } = useBoard();
+  const { notes, newNoteHandle, users } = useBoard();
 
   const handleAddNote = (e) => {
     e.preventDefault();
@@ -23,7 +23,53 @@ const Column = ({ title }) => {
         borderRadius: "12px",
       }}
     >
-      <h3>{`${title}`}</h3>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "12px",
+        }}
+      >
+        <h3>{title}</h3>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
+          {users?.slice(0, 4).map((user) => (
+            <img
+              src={"../../public/userAvatar.jpg"}
+              alt={user.username}
+              title={user.username}
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                border: "2px solid white",
+                marginLeft: "-8px",
+                objectFit: "cover",
+              }}
+            />
+          ))}
+
+          {users?.length > 4 && (
+            <div
+              style={{
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                background: "#e2e8f0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "12px",
+                marginLeft: "-8px",
+                border: "2px solid white",
+              }}
+            >
+              +{users.length - 4}
+            </div>
+          )}
+        </div>
+      </div>
 
       <button
         onClick={() => setActiveColumns(`${title}`)}
@@ -51,16 +97,14 @@ const Column = ({ title }) => {
 
       {notes
         .filter((note) => note.column === `${title}`)
-        .map((filteredNote) => {
-          return (
-            <Card
-              text={filteredNote.text}
-              name="Prabhjot"
-              id={filteredNote.id}
-              votes={filteredNote.votes}
-            />
-          );
-        })}
+        .map((filteredNote) => (
+          <Card
+            text={filteredNote.text}
+            name="Prabhjot"
+            id={filteredNote.id}
+            votes={filteredNote.votes}
+          />
+        ))}
     </div>
   );
 };

@@ -13,12 +13,22 @@ const io = new Server(server, {
   },
 });
 
+const activeUsers = {};
+const getUsersInRoom = (roomID) => {
+  return Object.values(activeUsers)
+    .filter((user) => user.roomID === roomID)
+    .map((user) => user.username);
+};
+
 io.on("connection", (socket) => {
   console.log("A new user has connected!");
 
-  socket.on("join-room", (id) => {
-    socket.join(id);
-    console.log(`User ${socket.id} joined room: ${id}`);
+  socket.on("join-room", ({ roomID, username }) => {
+    activeUsers[socket.id] = { username, roomID };
+    socket.join(roomID);
+    const roomUsers = getUsersInRoom(roomID);
+    io.to(roomID).emit("room-users-updated", roomUsers);
+    console.log(`${username} joined room: ${roomID}`);
   });
 
   socket.on("client-add-note", (newNote) => {
@@ -27,6 +37,17 @@ io.on("connection", (socket) => {
 
   socket.on("client-vote-increase", (cardID, roomID) => {
     socket.to(roomID).emit("server-vote-increase", cardID);
+  });
+
+  socket.on("disconnect", () => {
+    const user = activeUsers[socket.id];
+    if (user) {
+      const { roomID } = user;
+      delete activeUsers[socket.id];
+
+      const roomUsers = getUsersInRoom(roomID);
+      io.to(roomID).emit("room-users-updated", roomUsers);
+    }
   });
 });
 
