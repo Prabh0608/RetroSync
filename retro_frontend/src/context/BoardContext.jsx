@@ -30,10 +30,19 @@ export default function BoardProvider({ children }) {
       setUsers(roomUsers);
     });
 
-    socketRef.current.on("server-note-moved", (cardId, newColumn) => {
+    socketRef.current.on("server-note-moved", (arg1, arg2) => {
+      const incomingCardId =
+        arg1 && typeof arg1 === "object" ? arg1.cardId : arg1;
+      const incomingColumn =
+        arg1 && typeof arg1 === "object" ? arg1.newColumn || arg1.column : arg2;
+
+      if (!incomingCardId || !incomingColumn) return;
+
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
-          note.id === cardId ? { ...note, column: newColumn } : note,
+          String(note.id) === String(incomingCardId)
+            ? { ...note, column: incomingColumn }
+            : note,
         ),
       );
     });
@@ -96,18 +105,28 @@ export default function BoardProvider({ children }) {
 
     setNotes((prevNotes) =>
       prevNotes.map((note) =>
-        note.id === draggableId
+        String(note.id) === String(draggableId)
           ? { ...note, column: destination.droppableId }
           : note,
       ),
     );
 
     if (socketRef.current) {
-      socketRef.current.emit("client-move-note", {
-        cardId: draggableId,
-        newColumn: destination.droppableId,
-        roomID: roomID, // 🌟 Fixed casing mismatch from 'roomId' to 'roomID'
-      });
+      // 🌟 FIXED: Changed from emitting an object to flat positional parameters matching your backend's layout pattern
+      socketRef.current.emit(
+        "client-move-note",
+        draggableId,
+        destination.droppableId,
+        roomID,
+      );
+
+      // Fallback: If your backend named this event after the server pattern, we emit this too
+      socketRef.current.emit(
+        "client-note-moved",
+        draggableId,
+        destination.droppableId,
+        roomID,
+      );
     }
   };
 
