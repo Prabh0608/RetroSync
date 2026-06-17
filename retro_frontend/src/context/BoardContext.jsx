@@ -62,10 +62,10 @@ export default function BoardProvider({ children }) {
     socketRef.current.emit("client-vote-increase", cardId, roomID);
   };
 
-  const handleNewBoard = () => {
-    setRoomID("roomabcd");
+  const handleNewBoard = (generatedRoomId) => {
+    setRoomID(generatedRoomId);
     socketRef.current.emit("join-room", {
-      roomID: "roomabcd",
+      roomID: generatedRoomId,
       username: username,
     });
   };

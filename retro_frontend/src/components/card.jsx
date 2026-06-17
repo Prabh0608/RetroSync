@@ -1,25 +1,23 @@
 import { useBoard } from "../context/BoardContext";
 import { Draggable } from "@hello-pangea/dnd";
 
-// 1. Double check that 'index' is sitting inside these curly braces!
 const Card = ({ text, name, id, votes, index }) => {
   const { handleVoteShared } = useBoard();
 
   return (
-    // 2. Make sure Draggable consumes it right here
     <Draggable draggableId={String(id)} index={index}>
       {(provided) => (
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps} // 👈 3. This spreads the click-and-hold handle logic!
+          {...provided.dragHandleProps}
           style={{
             background: "#fff",
             border: "1px solid #e5e7eb",
             borderRadius: "12px",
             padding: "16px",
             marginBottom: "12px",
-            ...provided.draggableProps.style, // 👈 4. Merges layout animation CSS
+            ...provided.draggableProps.style,
           }}
         >
           <p style={{ margin: 0, marginBottom: "12px", color: "#111827" }}>
