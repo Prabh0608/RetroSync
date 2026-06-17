@@ -39,6 +39,10 @@ io.on("connection", (socket) => {
     socket.to(roomID).emit("server-vote-increase", cardID);
   });
 
+  socket.on("client-move-note", (cardId, newColumn, roomId) => {
+    socket.to(roomId).emit("server-note-moved", { cardId, newColumn });
+  });
+
   socket.on("disconnect", () => {
     const user = activeUsers[socket.id];
     if (user) {

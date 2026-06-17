@@ -30,6 +30,14 @@ export default function BoardProvider({ children }) {
       setUsers(roomUsers);
     });
 
+    socketRef.current.on("server-note-moved", (cardId, newColumn) => {
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.id === cardId ? { ...note, column: newColumn } : note,
+        ),
+      );
+    });
+
     return () => socketRef.current.disconnect();
   }, []);
 
@@ -66,6 +74,34 @@ export default function BoardProvider({ children }) {
     setUsername(text);
   };
 
+  const handleDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === draggableId
+          ? { ...note, column: destination.droppableId }
+          : note,
+      ),
+    );
+
+    if (socketRef.current) {
+      socketRef.current.emit("client-move-note", {
+        cardId: draggableId,
+        newColumn: destination.droppableId,
+        roomId: roomID,
+      });
+    }
+  };
+
   return (
     <BoardContext.Provider
       value={{
@@ -75,6 +111,7 @@ export default function BoardProvider({ children }) {
         newNoteHandle,
         handleNewBoard,
         handleUsername,
+        handleDragEnd,
         users,
       }}
     >
