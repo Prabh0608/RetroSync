@@ -9,6 +9,7 @@ export default function BoardProvider({ children }) {
   const [roomID, setRoomID] = useState("");
   const [username, setUsername] = useState("anonymous");
   const [users, setUsers] = useState([]);
+  const [myVotes, setMyVotes] = useState([]);
   const socketRef = useRef(null);
 
   useEffect(() => {
@@ -22,6 +23,16 @@ export default function BoardProvider({ children }) {
       setNotes((prevNotes) =>
         prevNotes.map((note) =>
           note.id === cardId ? { ...note, votes: note.votes + 1 } : note,
+        ),
+      );
+    });
+
+    socketRef.current.on("server-vote-decrease", (cardId) => {
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.id === cardId
+            ? { ...note, votes: Math.max(0, note.votes - 1) }
+            : note,
         ),
       );
     });
@@ -63,12 +74,27 @@ export default function BoardProvider({ children }) {
   };
 
   const handleVoteShared = (cardId) => {
-    setNotes((prevNotes) =>
-      prevNotes.map((note) =>
-        note.id === cardId ? { ...note, votes: note.votes + 1 } : note,
-      ),
-    );
-    socketRef.current.emit("client-vote-increase", cardId, roomID);
+    const hasVoted = myVotes.includes(cardId);
+
+    if (hasVoted) {
+      setMyVotes((prev) => prev.filter((id) => id !== cardId));
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.id === cardId
+            ? { ...note, votes: Math.max(0, note.votes - 1) }
+            : note,
+        ),
+      );
+      socketRef.current.emit("client-vote-decrease", cardId, roomID);
+    } else {
+      setMyVotes((prev) => [...prev, cardId]);
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.id === cardId ? { ...note, votes: note.votes + 1 } : note,
+        ),
+      );
+      socketRef.current.emit("client-vote-increase", cardId, roomID);
+    }
   };
 
   const handleNewBoard = (generatedRoomId, passedUsername) => {
@@ -112,17 +138,8 @@ export default function BoardProvider({ children }) {
     );
 
     if (socketRef.current) {
-      // 🌟 FIXED: Changed from emitting an object to flat positional parameters matching your backend's layout pattern
       socketRef.current.emit(
         "client-move-note",
-        draggableId,
-        destination.droppableId,
-        roomID,
-      );
-
-      // Fallback: If your backend named this event after the server pattern, we emit this too
-      socketRef.current.emit(
-        "client-note-moved",
         draggableId,
         destination.droppableId,
         roomID,
@@ -143,6 +160,7 @@ export default function BoardProvider({ children }) {
         handleResetRoom,
         handleDragEnd,
         users,
+        myVotes,
       }}
     >
       {children}
