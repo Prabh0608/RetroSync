@@ -68,6 +68,7 @@ export default function BoardProvider({ children }) {
       text: text,
       votes: 0,
       roomID: roomID,
+      author: username,
     };
     setNotes([...notes, newNote]);
     socketRef.current.emit("client-add-note", newNote);
@@ -116,6 +117,7 @@ export default function BoardProvider({ children }) {
 
   const handleResetRoom = () => {
     setRoomID("");
+    setNotes([]);
   };
 
   const handleDragEnd = (result) => {

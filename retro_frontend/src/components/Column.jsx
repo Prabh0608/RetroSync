@@ -7,7 +7,7 @@ import { useBoard } from "../context/BoardContext";
 const Column = ({ title }) => {
   const [text, setText] = useState("");
   const [activeColumns, setActiveColumns] = useState();
-  const { notes, newNoteHandle } = useBoard();
+  const { notes, newNoteHandle, roomID } = useBoard();
 
   const handleAddNote = (e) => {
     e.preventDefault();
@@ -62,7 +62,6 @@ const Column = ({ title }) => {
         />
       )}
 
-      {/* The Droppable now isolates only the actual cards list area */}
       <Droppable droppableId={title}>
         {(provided) => (
           <div
@@ -71,13 +70,15 @@ const Column = ({ title }) => {
             style={{ flexGrow: 1, minHeight: "100px" }}
           >
             {notes
-              .filter((note) => note.column === `${title}`)
+              .filter(
+                (note) => note.column === `${title}` && note.roomID === roomID,
+              )
               .map((filteredNote, index) => (
                 <Card
                   key={filteredNote.id}
                   index={index}
                   text={filteredNote.text}
-                  name="Prabhjot"
+                  name={filteredNote.author || "anonymous"}
                   id={filteredNote.id}
                   votes={filteredNote.votes}
                 />
