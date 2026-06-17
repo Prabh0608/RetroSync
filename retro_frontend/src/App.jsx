@@ -8,8 +8,6 @@ function BoardContent() {
   const { roomID, handleDragEnd, handleResetRoom, users, username } =
     useBoard();
 
-  console.log(users);
-
   if (!roomID) {
     return <JoiningScreen />;
   }

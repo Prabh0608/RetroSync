@@ -106,7 +106,7 @@ export default function BoardProvider({ children }) {
       socketRef.current.emit("client-move-note", {
         cardId: draggableId,
         newColumn: destination.droppableId,
-        roomId: roomID,
+        roomID: roomID, // 🌟 Fixed casing mismatch from 'roomId' to 'roomID'
       });
     }
   };

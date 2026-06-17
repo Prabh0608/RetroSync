@@ -17,69 +17,76 @@ const Column = ({ title }) => {
   };
 
   return (
-    <Droppable droppableId={title}>
-      {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.droppableProps}
-          style={{
-            background: "#f8fafc",
-            padding: "16px",
-            borderRadius: "12px",
-            minHeight: "500px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "12px",
-            }}
-          >
-            <h3>{title}</h3>
-          </div>
+    <div
+      style={{
+        background: "#f8fafc",
+        padding: "16px",
+        borderRadius: "12px",
+        minHeight: "500px",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "12px",
+        }}
+      >
+        <h3>{title}</h3>
+      </div>
 
-          <button
-            onClick={() => setActiveColumns(`${title}`)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              margin: "10px 0",
-              border: "1px dashed #cbd5e1",
-              borderRadius: "8px",
-              background: "white",
-              cursor: "pointer",
-            }}
-          >
-            + Add New Item
-          </button>
+      <button
+        onClick={() => setActiveColumns(`${title}`)}
+        style={{
+          width: "100%",
+          padding: "10px",
+          margin: "10px 0",
+          border: "1px dashed #cbd5e1",
+          borderRadius: "8px",
+          background: "white",
+          cursor: "pointer",
+        }}
+      >
+        + Add New Item
+      </button>
 
-          {activeColumns === `${title}` && (
-            <Form
-              handleAddNote={handleAddNote}
-              text={text}
-              setText={setText}
-              placeHolder={"What can we do?"}
-            />
-          )}
-
-          {notes
-            .filter((note) => note.column === `${title}`)
-            .map((filteredNote, index) => (
-              <Card
-                key={filteredNote.id}
-                index={index}
-                text={filteredNote.text}
-                name="Prabhjot"
-                id={filteredNote.id}
-                votes={filteredNote.votes}
-              />
-            ))}
-          {provided.placeholder}
-        </div>
+      {activeColumns === `${title}` && (
+        <Form
+          handleAddNote={handleAddNote}
+          text={text}
+          setText={setText}
+          placeHolder={"What can we do?"}
+        />
       )}
-    </Droppable>
+
+      {/* The Droppable now isolates only the actual cards list area */}
+      <Droppable droppableId={title}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            style={{ flexGrow: 1, minHeight: "100px" }}
+          >
+            {notes
+              .filter((note) => note.column === `${title}`)
+              .map((filteredNote, index) => (
+                <Card
+                  key={filteredNote.id}
+                  index={index}
+                  text={filteredNote.text}
+                  name="Prabhjot"
+                  id={filteredNote.id}
+                  votes={filteredNote.votes}
+                />
+              ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </div>
   );
 };
 
