@@ -2,13 +2,32 @@ import { useState } from "react";
 import { useBoard } from "../context/BoardContext";
 
 const JoiningScreen = () => {
-  const [text, setText] = useState("");
+  const [usernameInput, setUsernameInput] = useState("");
   const [roomCode, setRoomCode] = useState("");
   const { handleNewBoard, handleUsername } = useBoard();
 
+  const getFinalUsername = () => {
+    return !usernameInput || usernameInput.trim() === ""
+      ? "anonymous"
+      : usernameInput.trim();
+  };
+
   const createRandomRoomId = () => {
+    const finalName = getFinalUsername();
+    handleUsername(finalName);
+
     const randomId = Math.random().toString(36).substring(2, 9);
-    handleNewBoard(randomId);
+    handleNewBoard(randomId, finalName);
+  };
+
+  const handleJoinExisting = () => {
+    if (!roomCode.trim()) return;
+
+    const finalName = getFinalUsername();
+    handleUsername(finalName);
+
+    handleNewBoard(roomCode.trim(), finalName);
+    setRoomCode("");
   };
 
   return (
@@ -23,48 +42,29 @@ const JoiningScreen = () => {
         gap: "24px",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <div
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          border: "1px solid #c4c7c5",
+          borderRadius: "16px",
+          padding: "0 16px",
+          height: "48px",
+          width: "320px",
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Enter your username (optional)"
+          value={usernameInput}
+          onChange={(e) => setUsernameInput(e.target.value)}
           style={{
-            display: "flex",
-            alignItems: "center",
-            border: "1px solid #c4c7c5",
-            borderRadius: "16px",
-            padding: "0 16px",
-            height: "48px",
-            width: "320px",
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Enter your username"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            style={{
-              border: "none",
-              outline: "none",
-              width: "100%",
-              fontSize: "16px",
-            }}
-          />
-        </div>
-        <button
-          onClick={() => {
-            if (!text.trim()) return;
-            handleUsername(text);
-            setText("");
-          }}
-          style={{
-            background: "transparent",
             border: "none",
-            color: "#5f6368",
+            outline: "none",
+            width: "100%",
             fontSize: "16px",
-            cursor: "pointer",
-            whiteSpace: "nowrap",
           }}
-        >
-          Submit
-        </button>
+        />
       </div>
 
       <div
@@ -119,11 +119,7 @@ const JoiningScreen = () => {
           />
         </div>
         <button
-          onClick={() => {
-            if (!roomCode.trim()) return;
-            handleNewBoard(roomCode);
-            setRoomCode("");
-          }}
+          onClick={handleJoinExisting}
           style={{
             background: "transparent",
             border: "none",

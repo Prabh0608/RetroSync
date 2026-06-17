@@ -5,8 +5,10 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import { useBoard } from "./context/BoardContext";
 
 function BoardContent() {
-  const { roomID, handleDragEnd, handleResetRoom, users, mySocketId } =
+  const { roomID, handleDragEnd, handleResetRoom, users, username } =
     useBoard();
+
+  console.log(users);
 
   if (!roomID) {
     return <JoiningScreen />;
@@ -54,12 +56,7 @@ function BoardContent() {
             Active Users:
           </span>
           {users.slice(0, 4).map((user, idx) => {
-            const currentName =
-              typeof user === "string" ? user : user.username || "anonymous";
-            const currentId =
-              typeof user === "object" ? user.id || user.socketId : "";
-            const isMe = currentId === mySocketId;
-
+            const isMe = user === username;
             return (
               <span
                 key={idx}
@@ -73,7 +70,7 @@ function BoardContent() {
                   fontWeight: "500",
                 }}
               >
-                {currentName}{" "}
+                {user}{" "}
                 {isMe && (
                   <span
                     style={{

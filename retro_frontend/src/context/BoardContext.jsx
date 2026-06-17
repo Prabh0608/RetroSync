@@ -9,15 +9,10 @@ export default function BoardProvider({ children }) {
   const [roomID, setRoomID] = useState("");
   const [username, setUsername] = useState("anonymous");
   const [users, setUsers] = useState([]);
-  const [mySocketId, setMySocketId] = useState("");
   const socketRef = useRef(null);
 
   useEffect(() => {
     socketRef.current = io("http://localhost:3000");
-
-    socketRef.current.on("connect", () => {
-      setMySocketId(socketRef.current.id);
-    });
 
     socketRef.current.on("server-note-added", (newNote) => {
       setNotes((prevNotes) => [...prevNotes, newNote]);
@@ -67,17 +62,21 @@ export default function BoardProvider({ children }) {
     socketRef.current.emit("client-vote-increase", cardId, roomID);
   };
 
-  const handleNewBoard = (generatedRoomId) => {
+  const handleNewBoard = (generatedRoomId, passedUsername) => {
+    const safeUsername =
+      !passedUsername || passedUsername.trim() === ""
+        ? "anonymous"
+        : passedUsername;
     setRoomID(generatedRoomId);
     socketRef.current.emit("join-room", {
       roomID: generatedRoomId,
-      username: username,
+      username: safeUsername,
     });
   };
 
   const handleUsername = (text) => {
-    const finalName = text.trim() === "" ? "anonymous" : text;
-    setUsername(finalName);
+    const safeUsername = !text || text.trim() === "" ? "anonymous" : text;
+    setUsername(safeUsername);
   };
 
   const handleResetRoom = () => {
@@ -117,6 +116,7 @@ export default function BoardProvider({ children }) {
       value={{
         notes,
         roomID,
+        username,
         handleVoteShared,
         newNoteHandle,
         handleNewBoard,
@@ -124,7 +124,6 @@ export default function BoardProvider({ children }) {
         handleResetRoom,
         handleDragEnd,
         users,
-        mySocketId,
       }}
     >
       {children}
