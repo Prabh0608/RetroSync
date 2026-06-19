@@ -39,18 +39,18 @@ const Column = ({ title }) => {
       </div>
 
       <button
-        onClick={() => setActiveColumns(`${title}`)}
+        onClick={() => setActiveColumns(activeColumns === title ? "" : title)}
         style={{
           width: "100%",
           padding: "10px",
           margin: "10px 0",
           border: "1px dashed #cbd5e1",
           borderRadius: "8px",
-          background: "white",
+          background: activeColumns === title ? "#f1f5f9" : "white",
           cursor: "pointer",
         }}
       >
-        + Add New Item
+        {activeColumns === title ? "✕ Close" : "+ Add New Item"}
       </button>
 
       {activeColumns === `${title}` && (
