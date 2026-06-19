@@ -2,6 +2,10 @@ const express = require("express");
 const { Server } = require("socket.io");
 const http = require("node:http");
 const cors = require("cors");
+const mongoose = require("mongoose");
+const Note = require("./models/Note");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "config.env") });
 
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" }));
@@ -19,6 +23,13 @@ const getUsersInRoom = (roomID) => {
     .filter((user) => user.roomID === roomID)
     .map((user) => user.username);
 };
+
+mongoose
+  .connect(
+    `mongodb+srv://sainiprabhjot75_db_user:${process.env.DATABASE_PASS}@retrosync.ke395ef.mongodb.net/`,
+  )
+  .then(() => console.log("Your Databse is connected!"))
+  .catch((err) => console.log(err));
 
 io.on("connection", (socket) => {
   console.log("A new user has connected!");
