@@ -24,7 +24,7 @@ export default function JoiningScreen() {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        minHeight: "100vh",
+        overflow: "hidden",
         backgroundColor: "#f8fafc",
         fontFamily: "system-ui, -apple-system, sans-serif",
         padding: "4vw 2vw",
