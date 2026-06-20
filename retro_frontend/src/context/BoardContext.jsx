@@ -13,7 +13,7 @@ export default function BoardProvider({ children }) {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:3000");
+    socketRef.current = io("https://retrosync.onrender.com");
 
     socketRef.current.on("server-note-added", (newNote) => {
       setNotes((prevNotes) => [...prevNotes, newNote]);
