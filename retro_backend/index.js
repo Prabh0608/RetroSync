@@ -32,26 +32,55 @@ mongoose
   .catch((err) => console.log(err));
 
 io.on("connection", (socket) => {
-  console.log("A new user has connected!");
-
-  socket.on("join-room", ({ roomID, username }) => {
-    activeUsers[socket.id] = { username, roomID };
+  socket.on("join-room", async ({ roomID, username }) => {
     socket.join(roomID);
+    activeUsers[socket.id] = { roomID, username };
+
     const roomUsers = getUsersInRoom(roomID);
     io.to(roomID).emit("room-users-updated", roomUsers);
-    console.log(`${username} joined room: ${roomID}`);
+
+    try {
+      const existingNotes = await Note.find({ roomID });
+      socket.emit("initial-room-notes", existingNotes);
+    } catch (err) {
+      console.error("Error loading notes:", err);
+    }
   });
 
-  socket.on("client-add-note", (newNote) => {
-    socket.to(newNote.roomID).emit("server-note-added", newNote);
+  socket.on("client-add-note", async (newNote) => {
+    try {
+      await Note.create(newNote);
+      socket.to(newNote.roomID).emit("server-note-added", newNote);
+    } catch (err) {
+      console.error(err);
+    }
   });
 
-  socket.on("client-vote-increase", (cardID, roomID) => {
-    socket.to(roomID).emit("server-vote-increase", cardID);
+  socket.on("client-move-note", async (cardId, newColumn, roomID) => {
+    try {
+      await Note.findOneAndUpdate({ id: cardId }, { column: newColumn });
+      socket.to(roomID).emit("server-note-moved", cardId, newColumn);
+    } catch (err) {
+      console.error(err);
+    }
   });
 
-  socket.on("client-move-note", (cardId, newColumn, roomId) => {
-    socket.to(roomId).emit("server-note-moved", { cardId, newColumn });
+  socket.on("client-vote-increase", async (cardId, roomID) => {
+    try {
+      await Note.findOneAndUpdate({ id: cardId }, { $inc: { votes: 1 } });
+      socket.to(roomID).emit("server-vote-increase", cardId);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  socket.on("client-vote-decrease", async (cardId, roomID) => {
+    try {
+      await Note.findOneAndUpdate({ id: cardId }, { $inc: { votes: -1 } });
+      socket.to(roomID).emit("server-vote-decrease", cardId);
+    } catch (err) {
+      console.error(err);
+    }
   });
 
   socket.on("disconnect", () => {

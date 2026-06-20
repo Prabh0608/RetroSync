@@ -78,7 +78,7 @@ const Column = ({ title }) => {
                   key={filteredNote.id}
                   index={index}
                   text={filteredNote.text}
-                  name={filteredNote.author || "anonymous"}
+                  name={filteredNote.author}
                   id={filteredNote.id}
                   votes={filteredNote.votes}
                 />

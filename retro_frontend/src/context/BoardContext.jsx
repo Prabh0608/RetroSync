@@ -7,7 +7,7 @@ export const BoardContext = createContext();
 export default function BoardProvider({ children }) {
   const [notes, setNotes] = useState([]);
   const [roomID, setRoomID] = useState("");
-  const [username, setUsername] = useState("anonymous");
+  const [username, setUsername] = useState("");
   const [users, setUsers] = useState([]);
   const [myVotes, setMyVotes] = useState([]);
   const socketRef = useRef(null);
@@ -17,6 +17,10 @@ export default function BoardProvider({ children }) {
 
     socketRef.current.on("server-note-added", (newNote) => {
       setNotes((prevNotes) => [...prevNotes, newNote]);
+    });
+
+    socketRef.current.on("initial-room-notes", (loadedNotes) => {
+      setNotes(loadedNotes);
     });
 
     socketRef.current.on("server-vote-increase", (cardId) => {
@@ -104,6 +108,7 @@ export default function BoardProvider({ children }) {
         ? "anonymous"
         : passedUsername;
     setRoomID(generatedRoomId);
+    setUsername(safeUsername);
     socketRef.current.emit("join-room", {
       roomID: generatedRoomId,
       username: safeUsername,
