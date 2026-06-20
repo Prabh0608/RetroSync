@@ -8,12 +8,12 @@ const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname, "config.env") });
 
 const app = express();
-app.use(cors({ origin: "https://retro-sync-olive.vercel.app/" }));
+app.use(cors({ origin: "https://retro-sync-olive.vercel.app" }));
 
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://retro-sync-olive.vercel.app/",
+    origin: "https://retro-sync-olive.vercel.app",
     methods: ["GET", "POST"],
   },
 });
