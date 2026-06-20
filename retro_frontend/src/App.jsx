@@ -5,11 +5,61 @@ import { DragDropContext } from "@hello-pangea/dnd";
 import { useBoard } from "./context/BoardContext";
 
 function BoardContent() {
-  const { roomID, handleDragEnd, handleResetRoom, users, username } =
-    useBoard();
+  const {
+    roomID,
+    isSocketConnected,
+    handleDragEnd,
+    handleResetRoom,
+    users,
+    username,
+  } = useBoard();
 
   if (!roomID) {
     return <JoiningScreen />;
+  }
+
+  if (roomID && !isSocketConnected) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          fontFamily: "system-ui, sans-serif",
+          backgroundColor: "#f8fafc",
+        }}
+      >
+        <div
+          style={{
+            border: "4px solid #e2e8f0",
+            borderTop: "4px solid #3b82f6",
+            borderRadius: "50%",
+            width: "40px",
+            height: "40px",
+            animation: "spin 1s linear infinite",
+          }}
+        />
+        <h3 style={{ marginTop: "24px", color: "#1e293b" }}>
+          Waking up real-time server...
+        </h3>
+        <p
+          style={{
+            color: "#64748b",
+            fontSize: "14px",
+            maxWidth: "340px",
+            textAlign: "center",
+            margin: "8px 0 0 0",
+            lineHeight: "1.5",
+          }}
+        >
+          We use a free hosting tier. It may take up to 60 seconds for the
+          backend engines to initialize. Thank you for your patience!
+        </p>
+        <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+      </div>
+    );
   }
 
   return (

@@ -8,12 +8,21 @@ export default function BoardProvider({ children }) {
   const [notes, setNotes] = useState([]);
   const [roomID, setRoomID] = useState("");
   const [username, setUsername] = useState("");
+  const [isSocketConnected, setIsSocketConnected] = useState(false);
   const [users, setUsers] = useState([]);
   const [myVotes, setMyVotes] = useState([]);
   const socketRef = useRef(null);
 
   useEffect(() => {
     socketRef.current = io("https://retrosync.onrender.com");
+
+    socketRef.current.on("connect", () => {
+      setIsSocketConnected(true);
+    });
+
+    socketRef.current.on("disconnect", () => {
+      setIsSocketConnected(false);
+    });
 
     socketRef.current.on("server-note-added", (newNote) => {
       setNotes((prevNotes) => [...prevNotes, newNote]);
@@ -166,6 +175,7 @@ export default function BoardProvider({ children }) {
         handleUsername,
         handleResetRoom,
         handleDragEnd,
+        isSocketConnected,
         users,
         myVotes,
       }}
