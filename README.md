@@ -42,8 +42,6 @@ RetroSync/
     └── dist/           # Production minified bundle destination
 ```
 
-````
-
 ---
 
 ## 🚀 Getting Started
@@ -55,58 +53,51 @@ RetroSync/
 
 ### 1. Backend Setup
 
-1. Navigate to the backend directory:
+**Step 1:** Navigate to the backend directory
 
 ```bash
-   cd backend
-
+cd backend
 ```
 
-2. Install dependencies:
+**Step 2:** Install backend dependencies
 
 ```bash
-   npm install
-
+npm install
 ```
 
-3. Create a `config.env` file in the `backend/` root directory:
+**Step 3:** Create a `config.env` file in the `backend/` root directory
 
 ```env
-   DATABASE_PASS=your_mongodb_cluster_password
-
+DATABASE_PASS=your_mongodb_cluster_password
 ```
 
-4. Fire up the local development server:
+**Step 4:** Fire up the local development server
 
 ```bash
-   npm start
-
+npm start
 ```
 
 ### 2. Frontend Setup
 
-1. Navigate to the frontend directory:
+**Step 1:** Navigate to the frontend directory
 
 ```bash
-   cd frontend
-
+cd ../frontend
 ```
 
-2. Install dependencies:
+**Step 2:** Install frontend dependencies
 
 ```bash
-   npm install
-
+npm install
 ```
 
-3. Launch the development server:
+**Step 3:** Launch the development server
 
 ```bash
-   npm run dev
-
+npm run dev
 ```
 
-4. Open your browser to `http://localhost:5173`.
+**Step 4:** Open your browser to `http://localhost:5173`.
 
 ---
 
@@ -116,8 +107,3 @@ RetroSync/
 - **API Socket Server:** Hosted securely via automated Render web app container pipelines.
 
 > 💡 **Note on Free-Tier Hosting:** The backend server is hosted on a free cloud container. If the application has been inactive, it may take roughly 50-60 seconds for the engine instance to spin up on your first connection request.
-
-```
-
-```
-````
