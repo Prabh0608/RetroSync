@@ -1,10 +1,10 @@
-# 🚀 RetroSync
+# RetroSync
 
 A production-ready, real-time Agile Retrospective tool built to help remote teams collaborate effortlessly. Teams can create rooms, brainstorm ideas on drag-and-drop sticky notes, vote on items, and see updates synchronize instantly across all clients.
 
 ---
 
-## ✨ Features
+## Features
 
 - **Instant Real-Time Sync:** Powered by WebSockets for instantaneous multi-user collaboration.
 - **Persistent Rooms:** Agile boards are stored permanently using Mongoose schemas.
@@ -13,7 +13,7 @@ A production-ready, real-time Agile Retrospective tool built to help remote team
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer          | Technology                 | Usage                                                      |
 | :------------- | :------------------------- | :--------------------------------------------------------- |
@@ -26,7 +26,7 @@ A production-ready, real-time Agile Retrospective tool built to help remote team
 
 ---
 
-## 🏗️ Architecture Layout
+## Architecture Layout
 
 ```text
 RetroSync/
@@ -44,7 +44,7 @@ RetroSync/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -101,7 +101,7 @@ npm run dev
 
 ---
 
-## 🌐 Production Deployments
+## Production Deployments
 
 - **Live Client Link:** [https://retro-sync-olive.vercel.app](https://retro-sync-olive.vercel.app)
 - **API Socket Server:** Hosted securely via automated Render web app container pipelines.
