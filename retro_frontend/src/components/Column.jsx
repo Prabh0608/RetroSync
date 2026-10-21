@@ -3,6 +3,8 @@ import Card from "./card";
 import { Droppable } from "@hello-pangea/dnd";
 import { useState } from "react";
 import { useBoard } from "../context/BoardContext";
+import "../css/column.css";
+import "../css/button.css";
 
 const Column = ({ title }) => {
   const [text, setText] = useState("");
@@ -17,38 +19,14 @@ const Column = ({ title }) => {
   };
 
   return (
-    <div
-      style={{
-        background: "#f8fafc",
-        padding: "16px",
-        borderRadius: "12px",
-        minHeight: "500px",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "12px",
-        }}
-      >
+    <div className="board-column">
+      <div className="column-header">
         <h3>{title}</h3>
       </div>
 
       <button
         onClick={() => setActiveColumns(activeColumns === title ? "" : title)}
-        style={{
-          width: "100%",
-          padding: "10px",
-          margin: "10px 0",
-          border: "1px dashed #cbd5e1",
-          borderRadius: "8px",
-          background: activeColumns === title ? "#f1f5f9" : "white",
-          cursor: "pointer",
-        }}
+        className={`button button-add-item ${activeColumns === title ? "button-add-item-active" : ""}`}
       >
         {activeColumns === title ? "✕ Close" : "+ Add New Item"}
       </button>
@@ -64,11 +42,7 @@ const Column = ({ title }) => {
 
       <Droppable droppableId={title}>
         {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            style={{ flexGrow: 1, minHeight: "100px" }}
-          >
+          <div ref={provided.innerRef} {...provided.droppableProps} className="column-drop-area">
             {notes
               .filter(
                 (note) => note.column === `${title}` && note.roomID === roomID,

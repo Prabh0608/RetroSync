@@ -14,7 +14,13 @@ export default function BoardProvider({ children }) {
   const socketRef = useRef(null);
 
   useEffect(() => {
-    socketRef.current = io("https://retrosync.onrender.com");
+    const socketUrl =
+      import.meta.env.VITE_SOCKET_URL ||
+      (import.meta.env.DEV
+        ? "http://localhost:3000"
+        : "https://retrosync.onrender.com");
+
+    socketRef.current = io(socketUrl);
 
     socketRef.current.on("connect", () => {
       setIsSocketConnected(true);

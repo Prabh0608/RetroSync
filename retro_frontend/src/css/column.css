@@ -1,0 +1,20 @@
+.board-column {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 12px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.column-drop-area {
+  flex-grow: 1;
+  min-height: 100px;
+}

@@ -1,5 +1,7 @@
 import { useBoard } from "../context/BoardContext";
 import { Draggable } from "@hello-pangea/dnd";
+import "../css/card.css";
+import "../css/button.css";
 
 const Card = ({ text, name, id, votes, index }) => {
   const { handleVoteShared, myVotes } = useBoard();
@@ -9,57 +11,14 @@ const Card = ({ text, name, id, votes, index }) => {
   return (
     <Draggable draggableId={String(id)} index={index}>
       {(provided) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          style={{
-            background: "#fff",
-            border: "1px solid #e5e7eb",
-            borderRadius: "12px",
-            padding: "16px",
-            marginBottom: "12px",
-            ...provided.draggableProps.style,
-          }}
-        >
-          <p style={{ margin: 0, marginBottom: "12px", color: "#111827" }}>
-            {text}
-          </p>
+        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="note-card" style={provided.draggableProps.style}>
+          <p className="note-card-text">{text}</p>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <div className="note-card-footer">
             <span>{name}</span>
-            <button
-              onClick={() => handleVoteShared(id)}
-              style={{
-                cursor: "pointer",
-                background: "transparent",
-                border: "1px solid #e5e7eb",
-                borderRadius: "20px",
-                padding: "4px 10px",
-                fontSize: "14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-                transition: "all 0.2s ease",
-                backgroundColor: hasVoted ? "#fff5f5" : "transparent",
-                borderColor: hasVoted ? "#fca5a5" : "#e5e7eb",
-              }}
-            >
+            <button onClick={() => handleVoteShared(id)} className={`button button-vote ${hasVoted ? "button-vote-active" : ""}`}>
               <span>{hasVoted ? "❤️" : "🤍"}</span>
-              <span
-                style={{
-                  fontWeight: "600",
-                  color: hasVoted ? "#dc2626" : "#4b5563",
-                }}
-              >
-                {votes}
-              </span>
+              <span className="vote-count">{votes}</span>
             </button>
           </div>
         </div>

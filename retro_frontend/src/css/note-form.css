@@ -1,0 +1,12 @@
+.note-form {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.note-form-input {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+}

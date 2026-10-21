@@ -1,0 +1,111 @@
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-family: system-ui, sans-serif;
+  background-color: #f8fafc;
+}
+
+.loading-spinner {
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.loading-title {
+  margin-top: 24px;
+  color: #1e293b;
+}
+
+.loading-message {
+  color: #64748b;
+  font-size: 14px;
+  max-width: 340px;
+  text-align: center;
+  margin: 8px 0 0 0;
+  line-height: 1.5;
+}
+
+.app-container {
+  padding: 20px;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.room-controls,
+.active-users {
+  display: flex;
+  align-items: center;
+}
+
+.room-controls {
+  gap: 16px;
+}
+
+.active-users {
+  gap: 8px;
+}
+
+.room-id {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.room-id-value {
+  font-weight: 400;
+  color: #4b5563;
+}
+
+.active-users-label {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.user-badge {
+  font-size: 14px;
+  background-color: #eff6ff;
+  color: #1e40af;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+  font-weight: 500;
+}
+
+.user-badge-current {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+  border-color: #e9d5ff;
+}
+
+.user-badge-you {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.user-badge-more {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+  font-weight: 600;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}

@@ -1,0 +1,28 @@
+.note-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.note-card-text {
+  margin: 0;
+  margin-bottom: 12px;
+  color: #111827;
+}
+
+.note-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.vote-count {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.button-vote-active .vote-count {
+  color: #dc2626;
+}
