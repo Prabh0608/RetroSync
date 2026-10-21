@@ -1,0 +1,83 @@
+.button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.button-back {
+  padding: 8px 14px;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.button-primary,
+.button-secondary {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.button-primary {
+  background-color: #111827;
+  color: #ffffff;
+  border: none;
+}
+
+.button-primary:hover {
+  opacity: 0.9;
+}
+
+.button-secondary {
+  background-color: #ffffff;
+  color: #111827;
+  border: 1px solid #cbd5e1;
+}
+
+.button-secondary:hover {
+  background-color: #f8fafc;
+}
+
+.button-add-item {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: white;
+}
+
+.button-add-item-active {
+  background: #f1f5f9;
+}
+
+.button-vote {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.button-vote-active {
+  background-color: #fff5f5;
+  border-color: #fca5a5;
+}
+
+.button-note-submit {
+  width: 50%;
+  padding: 10px;
+  margin: 10px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: white;
+}
